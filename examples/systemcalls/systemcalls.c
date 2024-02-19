@@ -1,4 +1,13 @@
 #include "systemcalls.h"
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <errno.h>
+
+#include <fcntl.h>
+#include <stdio.h>
+
 
 /**
  * @param cmd the command to execute with system()
@@ -17,7 +26,7 @@ bool do_system(const char *cmd)
  *   or false() if it returned a failure
 */
 
-    return true;
+    return !((bool) (system(cmd)));
 }
 
 /**
@@ -40,14 +49,12 @@ bool do_exec(int count, ...)
     va_start(args, count);
     char * command[count+1];
     int i;
+    bool status = true;
     for(i=0; i<count; i++)
     {
         command[i] = va_arg(args, char *);
     }
     command[count] = NULL;
-    // this line is to avoid a compile warning before your implementation is complete
-    // and may be removed
-    command[count] = command[count];
 
 /*
  * TODO:
@@ -58,10 +65,29 @@ bool do_exec(int count, ...)
  *   as second argument to the execv() command.
  *
 */
+    pid_t pid = fork();
+    int pid_status;
+   
+    if(pid == 0) //it's the child
+    {
+	 execv(command[0], command);
+	 exit(-1);
+    }
+    else
+    {
+	 if(wait(&pid_status) == -1)
+	 {
+	    status = false;
+	 }
+	 else if(WIFEXITED(pid_status))
+	 {
+	    status = ((WEXITSTATUS(pid_status) == 0) ? (true) : (false));
+	 }
 
+    }
     va_end(args);
 
-    return true;
+    return status;
 }
 
 /**
@@ -73,17 +99,15 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
 {
     va_list args;
     va_start(args, count);
-    char * command[count+1];
+    char * command[count+3];
     int i;
+    bool status = true;
     for(i=0; i<count; i++)
     {
         command[i] = va_arg(args, char *);
     }
+   
     command[count] = NULL;
-    // this line is to avoid a compile warning before your implementation is complete
-    // and may be removed
-    command[count] = command[count];
-
 
 /*
  * TODO
@@ -93,7 +117,37 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *
 */
 
+
+    pid_t pid = fork();
+    int pid_status;
+    int fd = open(outputfile, O_WRONLY|O_TRUNC|O_CREAT, 0644);
+
+    if(pid == 0) //it's the child
+    {
+        if (dup2(fd, 1) < 0)
+       	{
+	  perror("dup2");
+	  abort();
+       	}
+
+         execv(command[0], command);
+         exit(-1);
+    }
+    else
+    {
+         if(wait(&pid_status) == -1)
+         {
+            perror("wait error");
+            status = false;
+         }
+         else if(WIFEXITED(pid_status))
+         {
+            status = ((WEXITSTATUS(pid_status) == 0) ? (true) : (false));
+         }
+
+    }
+
     va_end(args);
 
-    return true;
+    return status;
 }
