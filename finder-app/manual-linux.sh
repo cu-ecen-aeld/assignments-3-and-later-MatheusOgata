@@ -13,7 +13,7 @@ FINDER_APP_DIR=$(realpath $(dirname $0))
 ARCH=arm64
 CROSS_COMPILE=aarch64-none-linux-gnu-
 INIT_DIR=$(pwd)
-COMPILER_LIBC_DIR=/usr/local/arm-gcc/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc
+COMPILER_LIBC_DIR=${INIT_DIR}/libc
 
 
 if [ $# -lt 1 ]
@@ -92,8 +92,8 @@ ${CROSS_COMPILE}readelf -a bin/busybox | grep "Shared library"
 
 #Add library dependencies to rootfs
 cd ${COMPILER_LIBC_DIR}
-sudo cp lib/ld-linux-aarch64.so.1 "$OUTDIR"/rootfs/lib
-sudo cp lib64/libm.so.6 lib64/libresolv.so.2 lib64/libc.so.6 "$OUTDIR"/rootfs/lib64
+sudo cp ld-linux-aarch64.so.1 "$OUTDIR"/rootfs/lib
+sudo cp libm.so.6 libresolv.so.2 libc.so.6 "$OUTDIR"/rootfs/lib64
 
 #Make device nodes
 cd "$OUTDIR"/rootfs
