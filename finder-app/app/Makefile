@@ -20,4 +20,4 @@ all: $(DEP) writer
 	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	rm *.o writer *.map
+	rm -f *.o writer *.map
