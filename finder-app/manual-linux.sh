@@ -42,7 +42,7 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     #Add your kernel build steps here
     make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- mrproper
     make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- defconfig
-    make -j4 ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- all
+    make -j8 ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- all
     make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- modules
     make ARCH=arm64 CROSS_COMPILE=aarch64-none-linux-gnu- dtbs
 fi
@@ -101,14 +101,14 @@ sudo mknod -m 666 dev/null c 1 3
 sudo mknod -m 600 dev/console c 5 1
 
 #Clean and build the writer utility
-cd ${INIT_DIR}/app
+cd ${INIT_DIR}
 make clean
 make CROSS_COMPILE=aarch64-none-linux-gnu-
 
 #Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
-cd ${INIT_DIR}/app
-cp -r finder.sh finder-test.sh writer ../conf ../autorun-qemu.sh  ${OUTDIR}/rootfs/home
+cd ${INIT_DIR}
+cp -r finder.sh finder-test.sh writer ./conf ./autorun-qemu.sh  ${OUTDIR}/rootfs/home
 
 #Chown the root directory
 cd "$OUTDIR"/rootfs
