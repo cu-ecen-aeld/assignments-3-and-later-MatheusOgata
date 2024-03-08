@@ -1,7 +1,7 @@
 
 SRC=$(wildcard *.c)
 DEP=$(SRC:.c=.o)
-FLAGS= -g -pthread -Wall -Werror -I.
+FLAGS= -g -lpthread -Wall -Werror -I.
 
 ifeq ($(CROSS_COMPILE),)
 	CC=gcc
