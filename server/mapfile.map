@@ -90,59 +90,59 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
  *(.gnu.hash)
  .gnu.hash      0x00000000000003b0       0x24 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
 
-.dynsym         0x00000000000003d8      0x2e8
+.dynsym         0x00000000000003d8      0x3c0
  *(.dynsym)
- .dynsym        0x00000000000003d8      0x2e8 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .dynsym        0x00000000000003d8      0x3c0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
 
-.dynstr         0x00000000000006c0      0x155
+.dynstr         0x0000000000000798      0x1c1
  *(.dynstr)
- .dynstr        0x00000000000006c0      0x155 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .dynstr        0x0000000000000798      0x1c1 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
 
-.gnu.version    0x0000000000000816       0x3e
+.gnu.version    0x000000000000095a       0x50
  *(.gnu.version)
- .gnu.version   0x0000000000000816       0x3e /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .gnu.version   0x000000000000095a       0x50 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
 
-.gnu.version_d  0x0000000000000858        0x0
+.gnu.version_d  0x00000000000009b0        0x0
  *(.gnu.version_d)
  .gnu.version_d
-                0x0000000000000858        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000009b0        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
 
-.gnu.version_r  0x0000000000000858       0x40
+.gnu.version_r  0x00000000000009b0       0x40
  *(.gnu.version_r)
  .gnu.version_r
-                0x0000000000000858       0x40 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000009b0       0x40 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
 
-.rela.dyn       0x0000000000000898       0xc0
+.rela.dyn       0x00000000000009f0       0xd8
  *(.rela.init)
  *(.rela.text .rela.text.* .rela.gnu.linkonce.t.*)
  *(.rela.fini)
  *(.rela.rodata .rela.rodata.* .rela.gnu.linkonce.r.*)
  *(.rela.data .rela.data.* .rela.gnu.linkonce.d.*)
  .rela.data.rel.ro
-                0x0000000000000898        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000009f0        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
  .rela.data.rel.local
-                0x0000000000000898       0x18 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x00000000000009f0       0x30 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
  *(.rela.tdata .rela.tdata.* .rela.gnu.linkonce.td.*)
  *(.rela.tbss .rela.tbss.* .rela.gnu.linkonce.tb.*)
  *(.rela.ctors)
  *(.rela.dtors)
  *(.rela.got)
- .rela.got      0x00000000000008b0       0x78 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .rela.got      0x0000000000000a20       0x78 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
  *(.rela.bss .rela.bss.* .rela.gnu.linkonce.b.*)
- .rela.bss      0x0000000000000928        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .rela.bss      0x0000000000000a98        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
  *(.rela.ldata .rela.ldata.* .rela.gnu.linkonce.l.*)
  *(.rela.lbss .rela.lbss.* .rela.gnu.linkonce.lb.*)
  *(.rela.lrodata .rela.lrodata.* .rela.gnu.linkonce.lr.*)
  *(.rela.ifunc)
- .rela.ifunc    0x0000000000000928        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .rela.ifunc    0x0000000000000a98        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
  .rela.fini_array
-                0x0000000000000928       0x18 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x0000000000000a98       0x18 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
  .rela.init_array
-                0x0000000000000940       0x18 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x0000000000000ab0       0x18 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
 
-.rela.plt       0x0000000000000958      0x258
+.rela.plt       0x0000000000000ac8      0x330
  *(.rela.plt)
- .rela.plt      0x0000000000000958      0x258 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .rela.plt      0x0000000000000ac8      0x330 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
  *(.rela.iplt)
 
 .relr.dyn
@@ -155,104 +155,113 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                 0x0000000000001000                _init
  .init          0x0000000000001016        0x5 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
 
-.plt            0x0000000000001020      0x1a0
+.plt            0x0000000000001020      0x230
  *(.plt)
- .plt           0x0000000000001020      0x1a0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .plt           0x0000000000001020      0x230 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
  *(.iplt)
 
-.plt.got        0x00000000000011c0       0x10
+.plt.got        0x0000000000001250       0x10
  *(.plt.got)
- .plt.got       0x00000000000011c0       0x10 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
-                0x00000000000011c0                __cxa_finalize@@GLIBC_2.2.5
+ .plt.got       0x0000000000001250       0x10 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x0000000000001250                __cxa_finalize@@GLIBC_2.2.5
 
-.plt.sec        0x00000000000011d0      0x190
+.plt.sec        0x0000000000001260      0x220
  *(.plt.sec)
- .plt.sec       0x00000000000011d0      0x190 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
-                0x00000000000011d0                inet_ntop@@GLIBC_2.2.5
-                0x00000000000011e0                recv@@GLIBC_2.2.5
-                0x00000000000011f0                puts@@GLIBC_2.2.5
-                0x0000000000001200                sigaction@@GLIBC_2.2.5
-                0x0000000000001210                setsockopt@@GLIBC_2.2.5
-                0x0000000000001220                strlen@@GLIBC_2.2.5
-                0x0000000000001230                __stack_chk_fail@@GLIBC_2.4
-                0x0000000000001240                send@@GLIBC_2.2.5
-                0x0000000000001250                strchr@@GLIBC_2.2.5
-                0x0000000000001260                printf@@GLIBC_2.2.5
-                0x0000000000001270                memset@@GLIBC_2.2.5
-                0x0000000000001280                close@@GLIBC_2.2.5
-                0x0000000000001290                fgets@@GLIBC_2.2.5
-                0x00000000000012a0                syslog@@GLIBC_2.2.5
-                0x00000000000012b0                listen@@GLIBC_2.2.5
-                0x00000000000012c0                fseek@@GLIBC_2.2.5
-                0x00000000000012d0                bind@@GLIBC_2.2.5
-                0x00000000000012e0                fopen@@GLIBC_2.2.5
-                0x00000000000012f0                perror@@GLIBC_2.2.5
-                0x0000000000001300                accept@@GLIBC_2.2.5
-                0x0000000000001310                openlog@@GLIBC_2.2.5
-                0x0000000000001320                fwrite@@GLIBC_2.2.5
-                0x0000000000001330                getaddrinfo@@GLIBC_2.2.5
-                0x0000000000001340                freeaddrinfo@@GLIBC_2.2.5
-                0x0000000000001350                socket@@GLIBC_2.2.5
+ .plt.sec       0x0000000000001260      0x220 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x0000000000001260                inet_ntop@@GLIBC_2.2.5
+                0x0000000000001270                recv@@GLIBC_2.2.5
+                0x0000000000001280                remove@@GLIBC_2.2.5
+                0x0000000000001290                puts@@GLIBC_2.2.5
+                0x00000000000012a0                sigaction@@GLIBC_2.2.5
+                0x00000000000012b0                setsockopt@@GLIBC_2.2.5
+                0x00000000000012c0                fclose@@GLIBC_2.2.5
+                0x00000000000012d0                strlen@@GLIBC_2.2.5
+                0x00000000000012e0                __stack_chk_fail@@GLIBC_2.4
+                0x00000000000012f0                send@@GLIBC_2.2.5
+                0x0000000000001300                strchr@@GLIBC_2.2.5
+                0x0000000000001310                printf@@GLIBC_2.2.5
+                0x0000000000001320                memset@@GLIBC_2.2.5
+                0x0000000000001330                close@@GLIBC_2.2.5
+                0x0000000000001340                fgets@@GLIBC_2.2.5
+                0x0000000000001350                pthread_mutex_unlock@@GLIBC_2.2.5
+                0x0000000000001360                pause@@GLIBC_2.2.5
+                0x0000000000001370                syslog@@GLIBC_2.2.5
+                0x0000000000001380                listen@@GLIBC_2.2.5
+                0x0000000000001390                fseek@@GLIBC_2.2.5
+                0x00000000000013a0                poll@@GLIBC_2.2.5
+                0x00000000000013b0                bind@@GLIBC_2.2.5
+                0x00000000000013c0                pthread_create@@GLIBC_2.34
+                0x00000000000013d0                fopen@@GLIBC_2.2.5
+                0x00000000000013e0                perror@@GLIBC_2.2.5
+                0x00000000000013f0                accept@@GLIBC_2.2.5
+                0x0000000000001400                openlog@@GLIBC_2.2.5
+                0x0000000000001410                fwrite@@GLIBC_2.2.5
+                0x0000000000001420                getaddrinfo@@GLIBC_2.2.5
+                0x0000000000001430                pthread_cancel@@GLIBC_2.34
+                0x0000000000001440                pthread_mutex_init@@GLIBC_2.2.5
+                0x0000000000001450                pthread_mutex_lock@@GLIBC_2.2.5
+                0x0000000000001460                freeaddrinfo@@GLIBC_2.2.5
+                0x0000000000001470                socket@@GLIBC_2.2.5
 
-.text           0x0000000000001360      0x72c
+.text           0x0000000000001480      0xa32
  *(.text.unlikely .text.*_unlikely .text.unlikely.*)
  *(.text.exit .text.exit.*)
  *(.text.startup .text.startup.*)
  *(.text.hot .text.hot.*)
  *(SORT_BY_NAME(.text.sorted.*))
  *(.text .stub .text.* .gnu.linkonce.t.*)
- .text          0x0000000000001360       0x26 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
-                0x0000000000001360                _start
- .text          0x0000000000001386        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o
- *fill*         0x0000000000001386        0xa 
- .text          0x0000000000001390       0xb9 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
- .text          0x0000000000001449      0x643 aesdsocket.o
-                0x0000000000001449                main
- .text          0x0000000000001a8c        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
- .text          0x0000000000001a8c        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
+ .text          0x0000000000001480       0x26 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x0000000000001480                _start
+ .text          0x00000000000014a6        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o
+ *fill*         0x00000000000014a6        0xa 
+ .text          0x00000000000014b0       0xb9 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
+ .text          0x0000000000001569      0x949 aesdsocket.o
+                0x0000000000001569                main
+ .text          0x0000000000001eb2        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
+ .text          0x0000000000001eb2        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
  *(.gnu.warning)
 
-.fini           0x0000000000001a8c        0xd
+.fini           0x0000000000001eb4        0xd
  *(SORT_NONE(.fini))
- .fini          0x0000000000001a8c        0x8 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o
-                0x0000000000001a8c                _fini
- .fini          0x0000000000001a94        0x5 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
+ .fini          0x0000000000001eb4        0x8 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o
+                0x0000000000001eb4                _fini
+ .fini          0x0000000000001ebc        0x5 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                 [!provide]                        PROVIDE (__etext = .)
                 [!provide]                        PROVIDE (_etext = .)
                 [!provide]                        PROVIDE (etext = .)
                 0x0000000000002000                . = ALIGN (CONSTANT (MAXPAGESIZE))
                 0x0000000000002000                . = SEGMENT_START ("rodata-segment", (ALIGN (CONSTANT (MAXPAGESIZE)) + (. & (CONSTANT (MAXPAGESIZE) - 0x1))))
 
-.rodata         0x0000000000002000      0x247
+.rodata         0x0000000000002000      0x36d
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata.cst4   0x0000000000002000        0x4 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
                 0x0000000000002000                _IO_stdin_used
  *fill*         0x0000000000002004        0x4 
- .rodata        0x0000000000002008      0x23f aesdsocket.o
+ .rodata        0x0000000000002008      0x365 aesdsocket.o
 
 .rodata1
  *(.rodata1)
 
-.eh_frame_hdr   0x0000000000002248       0x3c
+.eh_frame_hdr   0x0000000000002370       0x44
  *(.eh_frame_hdr)
- .eh_frame_hdr  0x0000000000002248       0x3c /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
-                0x0000000000002248                __GNU_EH_FRAME_HDR
+ .eh_frame_hdr  0x0000000000002370       0x44 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x0000000000002370                __GNU_EH_FRAME_HDR
  *(.eh_frame_entry .eh_frame_entry.*)
 
-.eh_frame       0x0000000000002288       0xcc
+.eh_frame       0x00000000000023b8       0xe8
  *(.eh_frame)
- .eh_frame      0x0000000000002288       0x30 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .eh_frame      0x00000000000023b8       0x30 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
                                          0x2c (size before relaxing)
- *fill*         0x00000000000022b8        0x0 
- .eh_frame      0x00000000000022b8       0x28 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ *fill*         0x00000000000023e8        0x0 
+ .eh_frame      0x00000000000023e8       0x28 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
                                          0x40 (size before relaxing)
- .eh_frame      0x00000000000022e0       0x18 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .eh_frame      0x0000000000002410       0x18 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
                                          0x30 (size before relaxing)
- .eh_frame      0x00000000000022f8       0x18 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .eh_frame      0x0000000000002428       0x18 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
                                          0x30 (size before relaxing)
- .eh_frame      0x0000000000002310       0x40 aesdsocket.o
-                                         0x58 (size before relaxing)
- .eh_frame      0x0000000000002350        0x4 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
+ .eh_frame      0x0000000000002440       0x5c aesdsocket.o
+                                         0x78 (size before relaxing)
+ .eh_frame      0x000000000000249c        0x4 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
  *(.eh_frame.*)
 
 .gcc_except_table
@@ -263,7 +272,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
 
 .exception_ranges
  *(.exception_ranges*)
-                0x0000000000003cf8                . = DATA_SEGMENT_ALIGN (CONSTANT (MAXPAGESIZE), CONSTANT (COMMONPAGESIZE))
+                0x0000000000003cb0                . = DATA_SEGMENT_ALIGN (CONSTANT (MAXPAGESIZE), CONSTANT (COMMONPAGESIZE))
 
 .eh_frame
  *(.eh_frame)
@@ -278,7 +287,7 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
 .exception_ranges
  *(.exception_ranges*)
 
-.tdata          0x0000000000003cf8        0x0
+.tdata          0x0000000000003cb0        0x0
                 [!provide]                        PROVIDE (__tdata_start = .)
  *(.tdata .tdata.* .gnu.linkonce.td.*)
 
@@ -286,23 +295,23 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
  *(.tbss .tbss.* .gnu.linkonce.tb.*)
  *(.tcommon)
 
-.preinit_array  0x0000000000003cf8        0x0
+.preinit_array  0x0000000000003cb0        0x0
                 [!provide]                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array)
                 [!provide]                        PROVIDE (__preinit_array_end = .)
 
-.init_array     0x0000000000003cf8        0x8
+.init_array     0x0000000000003cb0        0x8
                 [!provide]                        PROVIDE (__init_array_start = .)
  *(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*))
  *(.init_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .ctors)
- .init_array    0x0000000000003cf8        0x8 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
+ .init_array    0x0000000000003cb0        0x8 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
                 [!provide]                        PROVIDE (__init_array_end = .)
 
-.fini_array     0x0000000000003d00        0x8
+.fini_array     0x0000000000003cb8        0x8
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*))
  *(.fini_array EXCLUDE_FILE(*crtend?.o *crtend.o *crtbegin?.o *crtbegin.o) .dtors)
- .fini_array    0x0000000000003d00        0x8 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
+ .fini_array    0x0000000000003cb8        0x8 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
 
 .ctors
@@ -322,27 +331,27 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
 .jcr
  *(.jcr)
 
-.data.rel.ro    0x0000000000003d08        0x0
+.data.rel.ro    0x0000000000003cc0        0x0
  *(.data.rel.ro.local* .gnu.linkonce.d.rel.ro.local.*)
  *(.data.rel.ro .data.rel.ro.* .gnu.linkonce.d.rel.ro.*)
- .data.rel.ro   0x0000000000003d08        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .data.rel.ro   0x0000000000003cc0        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
 
-.dynamic        0x0000000000003d08      0x1f0
+.dynamic        0x0000000000003cc0      0x1f0
  *(.dynamic)
- .dynamic       0x0000000000003d08      0x1f0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
-                0x0000000000003d08                _DYNAMIC
+ .dynamic       0x0000000000003cc0      0x1f0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x0000000000003cc0                _DYNAMIC
 
-.got            0x0000000000003ef8      0x108
+.got            0x0000000000003eb0      0x150
  *(.got.plt)
- .got.plt       0x0000000000003ef8       0xe0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
-                0x0000000000003ef8                _GLOBAL_OFFSET_TABLE_
+ .got.plt       0x0000000000003eb0      0x128 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+                0x0000000000003eb0                _GLOBAL_OFFSET_TABLE_
  *(.igot.plt)
  *(.got)
  .got           0x0000000000003fd8       0x28 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
  *(.igot)
                 0x0000000000004000                . = DATA_SEGMENT_RELRO_END (., 0x0)
 
-.data           0x0000000000004000       0x10
+.data           0x0000000000004000       0x18
  *(.data .data.* .gnu.linkonce.d.*)
  .data          0x0000000000004000        0x4 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
                 0x0000000000004000                data_start
@@ -354,54 +363,56 @@ LOAD /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
                 0x0000000000004008        0x8 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
                 0x0000000000004008                __dso_handle
  .data          0x0000000000004010        0x0 aesdsocket.o
- .data          0x0000000000004010        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
- .data          0x0000000000004010        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
+ .data.rel.local
+                0x0000000000004010        0x8 aesdsocket.o
+ .data          0x0000000000004018        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
+ .data          0x0000000000004018        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
 
 .tm_clone_table
-                0x0000000000004010        0x0
+                0x0000000000004018        0x0
  .tm_clone_table
-                0x0000000000004010        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
+                0x0000000000004018        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
  .tm_clone_table
-                0x0000000000004010        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
+                0x0000000000004018        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
 
 .data1
  *(.data1)
-                0x0000000000004010                _edata = .
+                0x0000000000004018                _edata = .
                 [!provide]                        PROVIDE (edata = .)
-                0x0000000000004010                . = .
-                0x0000000000004010                __bss_start = .
+                0x0000000000004018                . = .
+                0x0000000000004018                __bss_start = .
 
-.bss            0x0000000000004010       0x20
+.bss            0x0000000000004020       0x20
  *(.dynbss)
- .dynbss        0x0000000000004010        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .dynbss        0x0000000000004020        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
  *(.bss .bss.* .gnu.linkonce.b.*)
- .bss           0x0000000000004010        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
- .bss           0x0000000000004010        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o
- .bss           0x0000000000004010        0x1 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
- *fill*         0x0000000000004011        0xf 
- .bss           0x0000000000004020       0x10 aesdsocket.o
- .bss           0x0000000000004030        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
- .bss           0x0000000000004030        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
+ .bss           0x0000000000004020        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o
+ .bss           0x0000000000004020        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o
+ .bss           0x0000000000004020        0x1 /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o
+ *fill*         0x0000000000004021        0xf 
+ .bss           0x0000000000004030       0x10 aesdsocket.o
+ .bss           0x0000000000004040        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o
+ .bss           0x0000000000004040        0x0 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
  *(COMMON)
-                0x0000000000004030                . = ALIGN ((. != 0x0)?0x8:0x1)
+                0x0000000000004040                . = ALIGN ((. != 0x0)?0x8:0x1)
 
 .lbss
  *(.dynlbss)
  *(.lbss .lbss.* .gnu.linkonce.lb.*)
  *(LARGE_COMMON)
-                0x0000000000004030                . = ALIGN (0x8)
-                0x0000000000004030                . = SEGMENT_START ("ldata-segment", .)
+                0x0000000000004040                . = ALIGN (0x8)
+                0x0000000000004040                . = SEGMENT_START ("ldata-segment", .)
 
 .lrodata
  *(.lrodata .lrodata.* .gnu.linkonce.lr.*)
 
-.ldata          0x0000000000006030        0x0
+.ldata          0x0000000000006040        0x0
  *(.ldata .ldata.* .gnu.linkonce.l.*)
-                0x0000000000006030                . = ALIGN ((. != 0x0)?0x8:0x1)
-                0x0000000000006030                . = ALIGN (0x8)
-                0x0000000000004030                _end = .
+                0x0000000000006040                . = ALIGN ((. != 0x0)?0x8:0x1)
+                0x0000000000006040                . = ALIGN (0x8)
+                0x0000000000004040                _end = .
                 [!provide]                        PROVIDE (end = .)
-                0x0000000000006030                . = DATA_SEGMENT_END (.)
+                0x0000000000006040                . = DATA_SEGMENT_END (.)
 
 .stab
  *(.stab)
