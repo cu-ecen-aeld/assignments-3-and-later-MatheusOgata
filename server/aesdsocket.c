@@ -11,9 +11,11 @@
 #include <signal.h>
 #include <pthread.h>
 #include <poll.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
 //Defines
-#define PRINT_LOG
+//#define PRINT_LOG
 #define BUFFER_SIZE 100
 
 //Macros
@@ -42,8 +44,9 @@ struct app_data
 int main(int argc, char* argv[])
 {
 
-	int opt;
-	int status;
+	bool is_daemon = (argc == 2 && strncmp("-d", argv[1], 2) == 0);
+	int opt = 1;
+	int status = 0;
 	int server_fd;
 	struct addrinfo hints;
 	struct addrinfo* servinfo = NULL;
@@ -61,7 +64,7 @@ int main(int argc, char* argv[])
 	memset(&s_action, 0x00, sizeof(struct sigaction));
 	s_action.sa_handler = signal_handler_function;
 
-        openlog(NULL, 0, LOG_USER);
+	openlog(NULL, 0, LOG_USER);
 
       	do
       	{		
@@ -79,7 +82,7 @@ int main(int argc, char* argv[])
                 	break;
 		}
 
-		if(setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) != 0)
+		if(setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(int)) != 0)
 		{
                 	perror("perror returned when setting socket options");
                 	status = -1;
@@ -98,7 +101,34 @@ int main(int argc, char* argv[])
 
 	freeaddrinfo(servinfo);
 
-      	do
+	if(status == 0 && is_daemon)
+	{
+		DEBUG_LOG("starting a daemon...\n");
+		pid_t pid = fork();
+
+		if(pid == 0) //child  process
+		{
+
+			chdir("/");
+			pid_t sid = setsid();			
+
+			close(STDIN_FILENO);
+			close(STDOUT_FILENO);
+			close(STDERR_FILENO);
+		}
+		else if(pid > 0) //parent process
+		{
+		        close(server_fd);		
+			exit(EXIT_SUCCESS);
+		}
+		else
+		{
+			DEBUG_LOG("ERROR: it's not possible to create the child\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+      
+	do
       	{
                 if(status != 0)
                         break;
@@ -151,9 +181,16 @@ int main(int argc, char* argv[])
 		if(status != 0)
 			break;
 
-		if(pthread_create(&server_thread, NULL, thread_function, (void *) &thread_data) != 0)
+		if(pthread_create(&server_thread, NULL, &thread_function, (void *) &thread_data) != 0)
 		{
 			DEBUG_LOG("It was not possible to create the thread");
+                        status = -1;
+                        break;
+		}
+
+		if(pthread_detach(server_thread) != 0)
+		{
+                        DEBUG_LOG("it was not possivel to deattach the thread\n");
                         status = -1;
                         break;
 		}
@@ -165,7 +202,6 @@ int main(int argc, char* argv[])
         		DEBUG_LOG("it was not possivel to lock mutex");
                         status = -1;
                         break;
-
         	}
 		
 		if(pthread_cancel(server_thread) != 0)
@@ -185,6 +221,7 @@ int main(int argc, char* argv[])
 	while(0);
 	
 	DEBUG_LOG("\nClosing server..\n");
+	shutdown(server_fd, SHUT_RDWR); 
 	close(server_fd);
 	fclose(file_dir);
 
