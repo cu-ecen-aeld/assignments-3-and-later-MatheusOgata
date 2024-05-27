@@ -15,9 +15,6 @@
 #endif
 
 #include "aesd-circular-buffer.h"
-#include <stdio.h>
-#include <stdint.h>
-#include <inttypes.h>
 
 /**
  * @param buffer the buffer to search for corresponding offset.  Any necessary locking must be performed by caller.
@@ -42,7 +39,7 @@ struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct
 
 	AESD_CIRCULAR_BUFFER_FOREACH(entry_ptr, buffer, idx)
 	{
-		if((count_offset + entry_ptr->size) <= char_offset)
+		if(char_offset >= buffer->entry[buffer->out_offs].size && (count_offset + entry_ptr->size) <= char_offset)
 		{
 			count_offset += entry_ptr->size;
 			continue;
@@ -62,19 +59,22 @@ struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct
 * new start location.
 * Any necessary locking must be handled by the caller
 * Any memory referenced in @param add_entry must be allocated by and/or must have a lifetime managed by the caller.
+* @return NULL if it was possible to add a new entry. On the other hand, if the circular buffer is full, return the buffer that 
+* will be removed. And return the add_entry buffer if the buffer entry has something wrong.
 */
-void aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const struct aesd_buffer_entry *add_entry)
+char* aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const struct aesd_buffer_entry *add_entry)
 {
     /**
     * implement per description
     */
+	char* removed_buff = NULL;
 
-	if(add_entry->buffptr == NULL)
+	if(add_entry->buffptr == NULL || add_entry->size <= 0)
 	{
-		printf("Null 1\n");
-		return;
+		return (char *)add_entry->buffptr;
 	}
 
+	removed_buff = (char *)buffer->entry[buffer->out_offs].buffptr;
 	buffer->entry[buffer->in_offs].buffptr = add_entry->buffptr;
 	buffer->entry[buffer->in_offs].size = add_entry->size;
         AESD_INCREMENT_INDEX((buffer->in_offs));
@@ -82,11 +82,14 @@ void aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const s
 	if(buffer->full)
 	{
 		buffer->out_offs = buffer->in_offs;	
+		return removed_buff;
 	}
 	else if(buffer->in_offs == buffer->out_offs)
 	{
 		buffer->full = true;
 	}
+
+	return NULL;
 }
 
 /**

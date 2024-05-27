@@ -10,6 +10,8 @@
 
 #ifdef __KERNEL__
 #include <linux/types.h>
+#include <linux/module.h>
+#include <linux/kernel.h>
 #else
 #include <stddef.h> // size_t
 #include <stdint.h> // uintx_t
@@ -60,7 +62,7 @@ struct circ_buffer_foreach
 extern struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct aesd_circular_buffer *buffer,
             size_t char_offset, size_t *entry_offset_byte_rtn );
 
-extern void aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const struct aesd_buffer_entry *add_entry);
+extern char*  aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const struct aesd_buffer_entry *add_entry);
 
 extern void aesd_circular_buffer_init(struct aesd_circular_buffer *buffer);
 
@@ -88,7 +90,7 @@ extern void aesd_circular_buffer_init(struct aesd_circular_buffer *buffer);
 						((buffer->out_offs > buffer->in_offs) ? (AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED - buffer->out_offs + buffer->in_offs) : (0))))
 
 #define AESD_CIRCULAR_BUFFER_FOREACH(entryptr,buffer, foreach_data) \
-    for(foreach_data.index = buffer->in_offs, foreach_data.count = 0, entryptr=&((buffer)->entry[foreach_data.index]); \
+    for(foreach_data.index = buffer->out_offs, foreach_data.count = 0, entryptr=&((buffer)->entry[foreach_data.index]); \
             foreach_data.count != AESD_CIRCULAR_BUFFER_SIZE(buffer);\
             AESD_INCREMENT_INDEX(foreach_data.index), foreach_data.count++, entryptr=&((buffer)->entry[foreach_data.index]))
 
