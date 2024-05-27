@@ -15,7 +15,7 @@
 #include <stdlib.h>
 
 //Defines
-//#define PRINT_LOG
+#define PRINT_LOG
 #define BUFFER_SIZE 100
 
 //Macros
@@ -25,10 +25,15 @@
 #define DEBUG_LOG(str, ...)
 #endif
 
+#define USE_AESD_CHAR_DEVICE  1
+
 //static variables
 static char ipstr[INET_ADDRSTRLEN];
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 1)
+static const char* file_location = "/dev/aesdchar";
+#else
 static const char* file_location = "/var/tmp/aesdsocketdata";
-
+#endif
 //funtons prototype
 static void signal_handler_function(int signal_number);
 static void* thread_function(void* param);
@@ -148,8 +153,8 @@ int main(int argc, char* argv[])
                         status = -1;
                         break;
         	}
-
-        	if(pthread_mutex_init(&mutex, NULL) != 0)
+        	
+		if(pthread_mutex_init(&mutex, NULL) != 0)
         	{
                 	DEBUG_LOG("Failed to initialize mutex");
                         status = -1;
@@ -223,11 +228,12 @@ int main(int argc, char* argv[])
 	DEBUG_LOG("\nClosing server..\n");
 	shutdown(server_fd, SHUT_RDWR); 
 	close(server_fd);
-	fclose(file_dir);
+        fclose(file_dir);
 
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 0)
 	DEBUG_LOG("removing aesdsocketdata\n");
 	remove(file_location);	
-
+#endif
 	return status;
 
 }
@@ -283,6 +289,9 @@ static void* thread_function(void* param)
                 syslog(LOG_DEBUG, "Accepted connection from %s \n", ipstr);
                 DEBUG_LOG("Accepted connection from %s \n", ipstr);
 
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 1)		
+		t_data->file_fd = file_dir = fopen(file_location, "w+r");
+#endif		 
 
                 do
                 {
@@ -303,7 +312,7 @@ static void* thread_function(void* param)
                         }
                         else if(rx_size < BUFFER_SIZE)
                         {
-                                if(fwrite(rec_buff, rx_size, 1, file_dir) == -1)
+      				if(fwrite(rec_buff, rx_size, 1, file_dir) == -1)
                                 {
                                         DEBUG_LOG("error fwrite\n");
                                 }
@@ -314,7 +323,8 @@ static void* thread_function(void* param)
                         }
                         else
                         {
-                                if(fwrite(rec_buff, rx_size, 1, file_dir) == -1)
+      
+      				if(fwrite(rec_buff, rx_size, 1, file_dir) == -1)
                                 {
                                         DEBUG_LOG("error fwrite\n");
                                 }
@@ -328,20 +338,22 @@ static void* thread_function(void* param)
                 while(1);
 
                 DEBUG_LOG("Sending data back..\n");
-                fseek(file_dir, 0, SEEK_SET);
-
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 1)
+#else      
+      		fseek(file_dir, 0, SEEK_SET);
+#endif
       
       		do //read the content of the file and send over the socket
                 {
 
-                        memset(rec_buff, '\0', sizeof(rec_buff));
+      			memset(rec_buff, '\0', sizeof(rec_buff));
                         if(fgets(rec_buff, BUFFER_SIZE, file_dir) == NULL)
                         {
+				DEBUG_LOG("from inside fgets\n");
                                 break;
                         }
 
                         DEBUG_LOG("fgets result: %s", rec_buff);
-
                         if(send(client_fd, rec_buff, strlen(rec_buff), 0) == -1)
                         {
                                 perror("perror while sending");
@@ -349,8 +361,12 @@ static void* thread_function(void* param)
                         }
                 }
                 while(1);
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 1)
+		fclose(file_dir);
+#else
 
                 fseek(file_dir, 0, SEEK_END);
+#endif		
                 close(client_fd);
                 syslog(LOG_DEBUG, "Closed connection from %s \n", ipstr);
 

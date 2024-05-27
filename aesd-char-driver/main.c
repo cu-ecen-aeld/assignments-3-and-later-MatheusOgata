@@ -74,10 +74,11 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
     }
     else
     {
+
 	if((bytes_to_read = (cur_entry->size - read_offs)) > count)
 		bytes_to_read = count;
 
-	if(copy_to_user(buf, cur_entry->buffptr, bytes_to_read) != 0)
+	if(copy_to_user(buf, (char *)(cur_entry->buffptr + read_offs), bytes_to_read) != 0)
 	{
 		retval = -EFAULT;
 		goto error_read;
