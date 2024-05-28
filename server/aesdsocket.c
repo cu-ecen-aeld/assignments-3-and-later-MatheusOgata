@@ -15,7 +15,7 @@
 #include <stdlib.h>
 
 //Defines
-#define PRINT_LOG
+//#define PRINT_LOG
 #define BUFFER_SIZE 100
 
 //Macros
@@ -288,10 +288,9 @@ static void* thread_function(void* param)
                 inet_ntop(AF_INET, &(((struct sockaddr_in*) &client_sock_addr)->sin_addr), ipstr, sizeof(ipstr));
                 syslog(LOG_DEBUG, "Accepted connection from %s \n", ipstr);
                 DEBUG_LOG("Accepted connection from %s \n", ipstr);
-
-#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 1)		
-		t_data->file_fd = file_dir = fopen(file_location, "w+r");
-#endif		 
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 1)                
+                        t_data->file_fd = file_dir = fopen(file_location, "w+r");
+#endif
 
                 do
                 {
@@ -312,6 +311,10 @@ static void* thread_function(void* param)
                         }
                         else if(rx_size < BUFFER_SIZE)
                         {
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)                
+                		t_data->file_fd = file_dir = fopen(file_location, "w+r");
+#endif
+				
       				if(fwrite(rec_buff, rx_size, 1, file_dir) == -1)
                                 {
                                         DEBUG_LOG("error fwrite\n");
@@ -320,9 +323,15 @@ static void* thread_function(void* param)
                                 {
                                         break;
                                 }
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)
+       		                fclose(file_dir);
+#endif				
                         }
                         else
                         {
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)                
+                                t_data->file_fd = file_dir = fopen(file_location, "w+r");
+#endif
       
       				if(fwrite(rec_buff, rx_size, 1, file_dir) == -1)
                                 {
@@ -332,27 +341,34 @@ static void* thread_function(void* param)
                                 {
                                         break;
                                 }
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)
+                                fclose(file_dir);
+#endif				
                         }
 
                 }
                 while(1);
 
                 DEBUG_LOG("Sending data back..\n");
-#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 1)
-#else      
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 0)
       		fseek(file_dir, 0, SEEK_SET);
 #endif
       
       		do //read the content of the file and send over the socket
                 {
 
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)                
+                        t_data->file_fd = file_dir = fopen(file_location, "w+r");
+#endif	
       			memset(rec_buff, '\0', sizeof(rec_buff));
                         if(fgets(rec_buff, BUFFER_SIZE, file_dir) == NULL)
                         {
 				DEBUG_LOG("from inside fgets\n");
                                 break;
                         }
-
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)
+      		       fclose(file_dir);
+#endif
                         DEBUG_LOG("fgets result: %s", rec_buff);
                         if(send(client_fd, rec_buff, strlen(rec_buff), 0) == -1)
                         {
@@ -362,9 +378,10 @@ static void* thread_function(void* param)
                 }
                 while(1);
 #if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 1)
-		fclose(file_dir);
-#else
-
+                       fclose(file_dir);
+#endif
+		
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 0)      		
                 fseek(file_dir, 0, SEEK_END);
 #endif		
                 close(client_fd);

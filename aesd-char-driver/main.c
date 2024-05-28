@@ -163,7 +163,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 
     retval = count;
 
-    if(dev->entry->size > 0 && strstr(dev->entry->buffptr, "\n") != NULL)
+    if(dev->entry->size > 0 && strnstr(dev->entry->buffptr, "\n", dev->entry->size) != NULL)
     {
     	if((aux_buff = aesd_circular_buffer_add_entry(dev->cb_rec_data, dev->entry)) != NULL)
 	{
