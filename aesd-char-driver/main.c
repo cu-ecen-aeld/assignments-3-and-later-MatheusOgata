@@ -67,8 +67,13 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 
     if(mutex_lock_interruptible(&dev->lock) != 0)
         return -ERESTARTSYS;
-	
-    if((cur_entry = aesd_circular_buffer_find_entry_offset_for_fpos(dev->cb_rec_data, dev->read_byte_count, &read_offs)) == NULL)
+
+    if(*f_pos >= aesd_circular_buffer_size(dev->cb_rec_data))
+    {
+	dev->read_byte_count = 0;
+        retval = 0;
+    }
+    else if((cur_entry = aesd_circular_buffer_find_entry_offset_for_fpos(dev->cb_rec_data, *f_pos, &read_offs)) == NULL)
     {	
 	dev->read_byte_count = 0;
 	retval = 0;
@@ -87,7 +92,7 @@ ssize_t aesd_read(struct file *filp, char __user *buf, size_t count,
 	
 	dev->read_byte_count += bytes_to_read;
 
-        f_pos = (loff_t *)aesd_circular_buffer_find_entry_offset_for_fpos(dev->cb_rec_data, dev->read_byte_count, &read_offs);
+        *f_pos += bytes_to_read;
 	retval = bytes_to_read;
     }
 	
@@ -114,6 +119,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,
 	
     if(mutex_lock_interruptible(&dev->lock) != 0)
     	return -ERESTARTSYS;
+
 
     if(dev->entry == NULL)
     {
@@ -182,10 +188,46 @@ error_write:
     return retval;
 
 }
+
+loff_t aesd_lseek(struct file *filp, loff_t off, int whence)
+{
+	struct aesd_dev* dev = filp->private_data;
+	loff_t ret_pos = 0;
+
+	switch(whence)
+	{
+	case SEEK_SET:
+		ret_pos = off;
+		break;
+
+	case SEEK_CUR:
+		ret_pos = off + filp->f_pos;
+		break;
+
+	case SEEK_END:
+		if(mutex_lock_interruptible(&dev->lock) != 0)
+        		return -EINVAL;
+
+		ret_pos = (loff_t)(aesd_circular_buffer_size(dev->cb_rec_data) + off);
+		mutex_unlock(&dev->lock);
+		break;
+
+	default:
+		return -EINVAL;
+	}
+
+	if(ret_pos < 0)
+		return -EINVAL;
+	
+	filp->f_pos = ret_pos;
+	return ret_pos;
+}
+
 struct file_operations aesd_fops = {
     .owner =    THIS_MODULE,
     .read =     aesd_read,
     .write =    aesd_write,
+    .llseek =   aesd_lseek,
     .open =     aesd_open,
     .release =  aesd_release,
 };

@@ -39,6 +39,9 @@ struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct
 
 	AESD_CIRCULAR_BUFFER_FOREACH(entry_ptr, buffer, idx)
 	{
+		if(entry_ptr->buffptr == NULL)
+			return NULL;
+
 		if(char_offset >= buffer->entry[buffer->out_offs].size && (count_offset + entry_ptr->size) <= char_offset)
 		{
 			count_offset += entry_ptr->size;
@@ -99,3 +102,21 @@ void aesd_circular_buffer_init(struct aesd_circular_buffer *buffer)
 {
     memset(buffer,0,sizeof(struct aesd_circular_buffer));
 }
+
+size_t aesd_circular_buffer_size(struct aesd_circular_buffer *buffer)
+{
+        struct  circ_buffer_foreach idx;
+        struct aesd_buffer_entry* entry_ptr = NULL;
+	size_t all_entries_size = 0;
+
+	AESD_CIRCULAR_BUFFER_FOREACH(entry_ptr, buffer, idx)
+        {
+		if(entry_ptr->buffptr == NULL)
+			break;
+
+		all_entries_size += entry_ptr->size;
+	}
+
+	return all_entries_size;
+}
+
