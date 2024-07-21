@@ -19,7 +19,11 @@
 #include <linux/string.h>
 #include <linux/fs.h> // file_operations
 #include <linux/slab.h>		      // 
+
 #include "aesdchar.h"
+#include "aesd_ioctl.h"
+#include "access_ok_version.h"
+
 int aesd_major =   0; // use dynamic major
 int aesd_minor =   0;
 
@@ -192,35 +196,67 @@ error_write:
 loff_t aesd_lseek(struct file *filp, loff_t off, int whence)
 {
 	struct aesd_dev* dev = filp->private_data;
-	loff_t ret_pos = 0;
+	loff_t buff_size = 0;
 
-	switch(whence)
+	if(mutex_lock_interruptible(&dev->lock) != 0)
+        	return -EINVAL;
+
+        buff_size = (loff_t)aesd_circular_buffer_size(dev->cb_rec_data);
+        mutex_unlock(&dev->lock);
+
+	return fixed_size_llseek(filp, off, whence, buff_size);
+}
+
+long aesd_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+	long ret = 0, err = 0;
+	struct aesd_seekto seekto;
+	struct aesd_dev* dev = filp->private_data;
+	long cb_offset = 0;
+
+	if(_IOC_TYPE(cmd) != AESD_IOC_MAGIC || _IOC_NR(cmd) > AESDCHAR_IOC_MAXNR)
+		return -ENOTTY;
+
+	if (_IOC_DIR(cmd) & _IOC_READ)
+		err = !access_ok_wrapper(VERIFY_WRITE, (void __user *)arg, _IOC_SIZE(cmd));
+	else if (_IOC_DIR(cmd) & _IOC_WRITE)
+		err =  !access_ok_wrapper(VERIFY_READ, (void __user *)arg, _IOC_SIZE(cmd));
+
+	if (err) 
+		return -EFAULT;
+
+	switch(cmd)
 	{
-	case SEEK_SET:
-		ret_pos = off;
-		break;
+	case AESDCHAR_IOCSEEKTO:
+        	if(copy_from_user(&seekto, (const void __user *) arg, sizeof(seekto)) != 0)
+        	{
+			ret = -EFAULT;
+		}
+		else
+		{
+			if(mutex_lock_interruptible(&dev->lock) != 0)
+                		return -EINVAL;
 
-	case SEEK_CUR:
-		ret_pos = off + filp->f_pos;
-		break;
+			cb_offset = (long) aesd_circular_buffer_find_offset(dev->cb_rec_data, (size_t)seekto.write_cmd, (size_t)seekto.write_cmd_offset);
+			mutex_unlock(&dev->lock);
 
-	case SEEK_END:
-		if(mutex_lock_interruptible(&dev->lock) != 0)
-        		return -EINVAL;
+			if(cb_offset < 0)
+			{
+				return -ENOTTY;
+			}
+			else
+			{
+				ret = filp->f_pos = cb_offset;
+			}
+		}
 
-		ret_pos = (loff_t)(aesd_circular_buffer_size(dev->cb_rec_data) + off);
-		mutex_unlock(&dev->lock);
 		break;
 
 	default:
-		return -EINVAL;
+		return -ENOTTY;
 	}
 
-	if(ret_pos < 0)
-		return -EINVAL;
-	
-	filp->f_pos = ret_pos;
-	return ret_pos;
+	return ret;
 }
 
 struct file_operations aesd_fops = {
@@ -228,6 +264,7 @@ struct file_operations aesd_fops = {
     .read =     aesd_read,
     .write =    aesd_write,
     .llseek =   aesd_lseek,
+    .unlocked_ioctl = aesd_ioctl,
     .open =     aesd_open,
     .release =  aesd_release,
 };

@@ -120,3 +120,35 @@ size_t aesd_circular_buffer_size(struct aesd_circular_buffer *buffer)
 	return all_entries_size;
 }
 
+size_t aesd_circular_buffer_find_offset(struct aesd_circular_buffer *buffer, size_t cmd, size_t cmd_offset)
+{
+	struct  circ_buffer_foreach idx;
+        struct aesd_buffer_entry* entry_ptr = NULL;
+        size_t cb_offset = 0;
+        
+	if(cmd >= AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED)
+		return -1;
+
+	AESD_CIRCULAR_BUFFER_FOREACH(entry_ptr, buffer, idx)
+        {
+                if(entry_ptr->buffptr == NULL)
+                        break;
+
+		if(cmd == idx.count)
+		{
+			if(entry_ptr->size >= cmd_offset)
+			{
+				cb_offset += cmd_offset;
+				return cb_offset;
+			}
+			else
+			{
+				break;
+			}		 	
+		}
+		
+		cb_offset += entry_ptr->size;
+	}
+
+	return -1;
+}

@@ -1,25 +1,23 @@
-
 SRC=$(wildcard *.c)
 DEP=$(SRC:.c=.o)
-FLAGS= -g -Wall -Werror -I.
+CFLAGS ?= -g -Wall -Werror -I.
+LDFLAGS ?= -lpthread -lrt
+TARGET ?= aesdsocket
 
 ifeq ($(CROSS_COMPILE),)
-	CC=gcc
+	CC?=gcc
 else
-	CC=$(addprefix $(CROSS_COMPILE), gcc)
+	CC?=$(addprefix $(CROSS_COMPILE), gcc)
 endif
 
 
-all: $(DEP)  aesdsocket 
+all: $(DEP)  $(TARGET)
 
 %: %.o
-	$(CC) $(FLAG) -o $@ $(DEP) -lpthread -Wl,-Map=mapfile.map
-
+	$(CC) $(CFLAGS) -o $@ $(DEP) $(LDFLAGS) -Wl,-Map=mapfile.map
 
 %.o: %.c %.h
-	$(CC) $(FLAG) -c $< -o $@ -lpthread
-
+	$(CC) $(CFLAGS) -c $< -o $@ $(LDFLAGS)
 
 clean:
 	rm -rf *.o aesdsocket *.map
-

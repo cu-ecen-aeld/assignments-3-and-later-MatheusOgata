@@ -14,6 +14,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "../aesd-char-driver/aesd_ioctl.h"
+
 //Defines
 //#define PRINT_LOG
 #define BUFFER_SIZE 100
@@ -34,6 +36,7 @@ static const char* file_location = "/dev/aesdchar";
 #else
 static const char* file_location = "/var/tmp/aesdsocketdata";
 #endif
+ const char* seekto_prefix = "AESDCHAR_IOCSEEKTO:";
 //funtons prototype
 static void signal_handler_function(int signal_number);
 static void* thread_function(void* param);
@@ -116,6 +119,7 @@ int main(int argc, char* argv[])
 
 			chdir("/");
 			pid_t sid = setsid();			
+			(void)sid;
 
 			close(STDIN_FILENO);
 			close(STDOUT_FILENO);
@@ -145,15 +149,15 @@ int main(int argc, char* argv[])
                 	break;
 		}
 
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 0)		
 		file_dir = fopen(file_location, "w+r");
-
 		if(file_dir == NULL)
         	{
             		perror("perror on opening or creating a file");
                         status = -1;
                         break;
         	}
-        	
+#endif        	
 		if(pthread_mutex_init(&mutex, NULL) != 0)
         	{
                 	DEBUG_LOG("Failed to initialize mutex");
@@ -228,9 +232,8 @@ int main(int argc, char* argv[])
 	DEBUG_LOG("\nClosing server..\n");
 	shutdown(server_fd, SHUT_RDWR); 
 	close(server_fd);
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 0) 	
         fclose(file_dir);
-
-#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 0)
 	DEBUG_LOG("removing aesdsocketdata\n");
 	remove(file_location);	
 #endif
@@ -241,6 +244,22 @@ int main(int argc, char* argv[])
 static void signal_handler_function(int signal_number)
 {
 	syslog(LOG_DEBUG, "Caught signal, exiting");
+}
+
+static bool is_seekto(char* str, FILE* filp)
+{
+	struct aesd_seekto seek_to;
+
+	if (strncmp(str, seekto_prefix, strlen(seekto_prefix)) != 0)
+        	return false;	
+	DEBUG_LOG("AESDCHAR_IOCSEEKTO has been found\n");
+
+        if (sscanf(str + strlen(seekto_prefix), "%d,%d", &seek_to.write_cmd, &seek_to.write_cmd_offset) != 2) 
+        	return false; 
+	DEBUG_LOG("write_cmd: %d  write_cmd_offset: %d\n", seek_to.write_cmd, seek_to.write_cmd_offset);
+		
+	ioctl (fileno(filp), AESDCHAR_IOCSEEKTO, &seek_to);
+	return true;
 }
 
 static void* thread_function(void* param)
@@ -299,6 +318,14 @@ static void* thread_function(void* param)
                         DEBUG_LOG("receiving data\n");
                         rx_size = recv(client_fd, rec_buff, BUFFER_SIZE, 0);
 
+#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 1)
+         		if (is_seekto (rec_buff, file_dir))
+                	{                       
+                        	DEBUG_LOG("It is seek to\n");
+				break;
+                	}
+#endif   
+
                         if(rx_size == -1) //an error has occurred
                         {
                                 perror("recv error");
@@ -311,10 +338,6 @@ static void* thread_function(void* param)
                         }
                         else if(rx_size < BUFFER_SIZE)
                         {
-#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)                
-                		t_data->file_fd = file_dir = fopen(file_location, "w+r");
-#endif
-				
       				if(fwrite(rec_buff, rx_size, 1, file_dir) == -1)
                                 {
                                         DEBUG_LOG("error fwrite\n");
@@ -323,16 +346,9 @@ static void* thread_function(void* param)
                                 {
                                         break;
                                 }
-#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)
-       		                fclose(file_dir);
-#endif				
                         }
                         else
                         {
-#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)                
-                                t_data->file_fd = file_dir = fopen(file_location, "w+r");
-#endif
-      
       				if(fwrite(rec_buff, rx_size, 1, file_dir) == -1)
                                 {
                                         DEBUG_LOG("error fwrite\n");
@@ -341,9 +357,6 @@ static void* thread_function(void* param)
                                 {
                                         break;
                                 }
-#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)
-                                fclose(file_dir);
-#endif				
                         }
 
                 }
@@ -353,22 +366,15 @@ static void* thread_function(void* param)
 #if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 0)
       		fseek(file_dir, 0, SEEK_SET);
 #endif
-      
+
       		do //read the content of the file and send over the socket
                 {
-
-#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)                
-                        t_data->file_fd = file_dir = fopen(file_location, "w+r");
-#endif	
       			memset(rec_buff, '\0', sizeof(rec_buff));
                         if(fgets(rec_buff, BUFFER_SIZE, file_dir) == NULL)
                         {
 				DEBUG_LOG("from inside fgets\n");
                                 break;
                         }
-#if defined(USE_AESD_CHAR_DEVICE) && (USE_AESD_CHAR_DEVICE == 8)
-      		       fclose(file_dir);
-#endif
                         DEBUG_LOG("fgets result: %s", rec_buff);
                         if(send(client_fd, rec_buff, strlen(rec_buff), 0) == -1)
                         {
@@ -391,6 +397,7 @@ static void* thread_function(void* param)
                 {
                         DEBUG_LOG("it was not possivel to unlock mutex");
                 }
-        }		
+        }	
+	return param;	
 }
 
